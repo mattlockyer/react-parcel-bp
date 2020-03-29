@@ -4,6 +4,7 @@ import { setLoading } from './app'
 //default state
 const defaultState = {
 	name: '',
+	loading: false,
 	isLoggedIn: false,
 }
 export const userReducer = getReducer(defaultState)
