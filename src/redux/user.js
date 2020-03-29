@@ -1,7 +1,6 @@
 import { getReducer, getState, UPDATE } from '../util/redux-util'
 import { get, set } from '../util/local-storage'
-import { wait } from '../util/util'
-import { setLoading, setDialog } from './app'
+import { setLoading } from './app'
 //default state
 const defaultState = {
 	name: '',
