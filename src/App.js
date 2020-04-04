@@ -1,24 +1,21 @@
-import React from 'react'
-import Loadable from 'react-loadable'
+import React, { Suspense, lazy } from 'react'
 import { connect } from 'react-redux'
 import { Router, navigate } from "@reach/router"
 import { appState } from './redux/app'
 import { userState } from './redux/user'
 //components
 import Dialog from './components/Dialog/Dialog'
-//routes
-
+//image and style
 import LoadingGif from './img/loading-bubble.gif'
 import { overlay } from './theme/Theme.module.scss'
-
+//routes
+const Home = lazy(() => import('./routes/Home/Home'))
+const About = lazy(() => import('./routes/About/About'))
+const Login = lazy(() => import('./routes/Login/Login'))
+//loading component
 const Loading = () => <div className={overlay}>
 	<img src={LoadingGif} />
 </div>
-
-const Home = Loadable({ loader: () => import('./routes/Home/Home'), loading: Loading })
-const About = Loadable({ loader: () => import('./routes/About/About'), loading: Loading })
-const Login = Loadable({ loader: () => import('./routes/Login/Login'), loading: Loading })
-
 //bring in both states here
 //can also use connect in route components when data is specific to those routes
 export default connect(
@@ -43,11 +40,14 @@ export default connect(
 			{ dialog && <div className={overlay}>
 				<Dialog {...dialog} />
 			</div>}
-			<Router>
-				<Home {...props} path="/" />
-				<About {...props} path="/about" />
-				<Login {...props} path="/login" />
-			</Router>
+			
+			<Suspense fallback={<Loading />}>
+				<Router>
+					<Home {...props} path="/" />
+					<About {...props} path="/about" />
+					<Login {...props} path="/login" />
+				</Router>
+			</Suspense>
 		</div>
 	)
 })
