@@ -9,6 +9,7 @@ export const howLongAgo = (ts) => {
     else if (howLong > 60) return Math.floor(howLong / 60) + ' minute ago'
     else return Math.floor(howLong) + ' seconds ago'
 }
+
 export const wait = (fn, del = 250) => new Promise((resolve) => {
     const tryFN = () => {
         console.log('waiting for ', 250)

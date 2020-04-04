@@ -1,7 +1,7 @@
 
-export const get = async(key) => {
+export const get = (key) => {
     try {
-      const value = JSON.parse(await localStorage.getItem(key))
+      const value = JSON.parse(localStorage.getItem(key))
       if (value === null) return undefined
       return value
     } catch(e) {
@@ -10,9 +10,9 @@ export const get = async(key) => {
     }
   }
   
-  export const set = async(key, value) => {
+  export const set = (key, value) => {
     try {
-      await localStorage.setItem(key, JSON.stringify(value))
+      localStorage.setItem(key, JSON.stringify(value))
     } catch (e) {
       console.log(e)
     }
