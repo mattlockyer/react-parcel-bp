@@ -1,4 +1,4 @@
-import { getReducer, getState, UPDATE } from '../util/redux-util'
+import { getReducer, getState } from '../util/redux-util'
 import { get, set } from '../util/local-storage'
 import { setLoading } from './app'
 //default state
@@ -7,8 +7,9 @@ const defaultState = {
 	loading: false,
 	isLoggedIn: false,
 }
-export const userReducer = getReducer(defaultState)
-export const userState = getState('userReducer', defaultState)
+const type = 'userReducer'
+export const userReducer = getReducer(type, defaultState)
+export const userState = getState(type)
 /********************************
 Functions
 ********************************/
@@ -31,6 +32,6 @@ export const logout = () => async (dispatch, getState) => {
 	window.location = '/'
 }
 const hydrateAccount = (name) => async (dispatch, getState) => {
-	dispatch({ type: UPDATE, name, isLoggedIn: true })
+	dispatch({ type, name, isLoggedIn: true })
 	dispatch(setLoading(false))
 }

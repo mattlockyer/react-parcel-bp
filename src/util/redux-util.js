@@ -1,25 +1,11 @@
 
-//generic event type for updating state
-export const UPDATE = 'UPDATE_STATE'
 //generic reducer for updating state
-export const getReducer = (defaultState) => (state = defaultState, action) => {
-	const { type } = action
-	switch (type) {
-		case UPDATE:
-			const a = { ...action }
-			delete a.type
-			return { ...state, ...a }
-		default:
-			return state
+export const getReducer = (type, defaultState) => {
+	return (state = defaultState, action) => {
+		if (action.type !== type) return state
+		delete action.type
+		return { ...state, ...action }
 	}
 }
 //generic function for returning state based on keys found in defaultState
-export const getState = (reducerName, defaultState) => {
-	const stateKeys = Object.keys(defaultState)
-	return ({ [reducerName]: { ...keys } }) => {
-		Object.keys(keys).forEach((k) => {
-			if (!stateKeys.includes(k)) delete keys[k]
-		})
-		return keys
-	}
-}
+export const getState = (type) => ({ [type]: { ...state } }) => state
