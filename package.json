@@ -24,7 +24,7 @@
   ],
   "prebuild": "rimraf dist",
   "scripts": {
-    "start": "pkill node; parcel ./src/index.html --open > output.log &",
+    "start": "pkill node; parcel ./src/index.html --open",
     "build": "rm -rf dist; parcel build ./src/index.html"
   }
 }

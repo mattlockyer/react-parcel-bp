@@ -2,14 +2,14 @@ import { getReducer, getState } from '../util/redux-util'
 //default state
 const defaultState = {
 	mounted: false,
-	loading: true,
+	loading: false,
 	dialog: null,
 }
 const type = 'appReducer'
 export const appReducer = getReducer(type, defaultState)
 export const appState = getState(type)
 //functions
-export const mount = (val) => async (dispatch, getState) => {
+export const mount = (val = false) => async (dispatch, getState) => {
 	console.log('APP MOUNT')
 	dispatch({ type, mounted: val })
 }

@@ -1,53 +1,45 @@
-import React, { Suspense, lazy } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react'
+import { connect, dispatch, useDispatch } from 'react-redux'
 import { Router, navigate } from "@reach/router"
-import { appState } from './redux/app'
+import { appState, mount } from './redux/app'
 import { userState } from './redux/user'
+import { dataState } from './redux/data'
+//routes
+import Home from './routes/Home/Home'
+import About from './routes/About/About'
+import Login from './routes/Login/Login'
 //components
 import Dialog from './components/Dialog/Dialog'
-//image and style
-import LoadingGif from './img/loading-bubble.gif'
-import { overlay } from './theme/Theme.module.scss'
-//routes
-const Home = lazy(() => import('./routes/Home/Home'))
-const About = lazy(() => import('./routes/About/About'))
-const Login = lazy(() => import('./routes/Login/Login'))
-//loading component
-const Loading = () => <div className={overlay}>
-	<img src={LoadingGif} />
-</div>
 //bring in both states here
 //can also use connect in route components when data is specific to those routes
+const App = (props) => {
+
+	const {
+		appState: { dialog, loading, mounted },
+	} = props
+
+	const dispatch = useDispatch()
+
+	// onMount
+	useEffect(() => {
+		dispatch(mount(true))
+	}, [])
+
+	return (
+		<div>
+			<Router>
+				<Home {...props} path="/" />
+				<About {...props} path="/about" />
+				<Login {...props} path="/login" />
+			</Router>
+		</div>
+	)
+}
+
 export default connect(
 	(state) => ({
 		appState: appState(state),
 		userState: userState(state),
+		dataState: dataState(state),
 	})
-)(function App(props) {
-
-	const {
-		appState: { dialog, loading },
-		userState: { isLoggedIn }
-	} = props
-
-	if (window.location.pathname.indexOf('login') === -1 && !isLoggedIn) {
-		navigate('/login')
-	}
-
-	return (
-		<div>
-			{ loading && <Loading />}
-			{ dialog && <div className={overlay}>
-				<Dialog {...dialog} />
-			</div>}
-			
-			<Suspense fallback={<Loading />}>
-				<Router>
-					<Home {...props} path="/" />
-					<About {...props} path="/about" />
-					<Login {...props} path="/login" />
-				</Router>
-			</Suspense>
-		</div>
-	)
-})
+)(App)
